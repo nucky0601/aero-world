@@ -1,0 +1,27 @@
+{
+  "name": "aero-world",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "dev:lan": "vite --host 0.0.0.0",
+    "chat": "node server/chat-server.mjs",
+    "start": "node server/production-server.mjs",
+    "build": "tsc && vite build",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.110.0",
+    "pg": "^8.22.0",
+    "phaser": "^3.90.0",
+    "ws": "^8.21.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2"
+  }
+}

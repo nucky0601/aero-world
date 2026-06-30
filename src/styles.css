@@ -1,0 +1,642 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  min-height: 100svh;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+  background: #c8f9e5;
+  color: #12324a;
+  font-family:
+    "Microsoft YaHei",
+    "PingFang SC",
+    system-ui,
+    sans-serif;
+}
+
+button,
+input,
+textarea {
+  touch-action: manipulation;
+}
+
+#game {
+  width: 100%;
+  height: var(--stable-window-height, 100svh);
+  min-height: 100svh;
+}
+
+canvas {
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+#register-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  overflow: auto;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.92), transparent 22%),
+    radial-gradient(circle at 80% 18%, rgba(126, 232, 255, 0.78), transparent 24%),
+    linear-gradient(160deg, rgba(200, 249, 229, 0.96), rgba(142, 234, 255, 0.94));
+}
+
+.register-card {
+  width: min(420px, 100%);
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 18px;
+  background: rgba(247, 251, 255, 0.86);
+  box-shadow: 0 20px 60px rgba(18, 50, 74, 0.22);
+}
+
+.register-card h1 {
+  margin: 0 0 6px;
+  font-size: 26px;
+}
+
+.register-card p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.account-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 4px;
+  border: 1px solid rgba(66, 201, 255, 0.42);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.54);
+}
+
+.register-card label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.register-card input,
+#chat-panel input {
+  box-sizing: border-box;
+  width: 100%;
+  border: 2px solid rgba(66, 201, 255, 0.85);
+  border-radius: 12px;
+  padding: 12px 14px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.92);
+  color: #12324a;
+  font: inherit;
+  font-size: max(16px, 1rem);
+}
+
+.register-card input:focus,
+#chat-panel input:focus {
+  border-color: #8df15f;
+}
+
+.register-card button,
+#chat-panel button,
+#account-chip button {
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: #2aaeea;
+  color: #f7fbff;
+  font: inherit;
+  font-weight: 800;
+  min-height: 44px;
+}
+
+.account-tabs button {
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: transparent;
+  color: #25618e;
+}
+
+.account-tabs button.active {
+  background: #2aaeea;
+  color: #f7fbff;
+  box-shadow: 0 6px 18px rgba(42, 174, 234, 0.28);
+}
+
+.register-card button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.form-error {
+  min-height: 18px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #b42318;
+}
+
+.register-note {
+  font-size: 12px;
+  color: #25618e;
+}
+
+.shake {
+  animation: shake 0.24s linear;
+}
+
+@keyframes shake {
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+#account-chip {
+  position: fixed;
+  top: max(10px, env(safe-area-inset-top));
+  left: 10px;
+  z-index: 20;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  max-width: min(70vw, 360px);
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 999px;
+  background: rgba(18, 50, 74, 0.62);
+  color: #f7fbff;
+  font-size: 13px;
+  backdrop-filter: blur(8px);
+}
+
+#account-chip span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#account-chip button {
+  padding: 8px 11px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+#chat-panel {
+  position: fixed;
+  top: max(58px, calc(env(safe-area-inset-top) + 48px));
+  left: 50%;
+  z-index: 20;
+  width: min(500px, calc(100vw - 20px));
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  transform: translateX(-50%);
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 16px;
+  background: rgba(18, 50, 74, 0.46);
+  backdrop-filter: blur(8px);
+}
+
+#chat-panel[hidden] {
+  display: none;
+}
+
+#chat-panel input {
+  min-width: 0;
+  min-height: 46px;
+  padding: 11px 13px;
+  border-radius: 12px;
+}
+
+#chat-panel button {
+  padding: 11px 14px;
+  border-radius: 12px;
+}
+
+.chat-toggle {
+  display: none;
+}
+
+.chat-fields {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+}
+
+#announcement-chip {
+  position: fixed;
+  right: 10px;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  z-index: 22;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 10px;
+  max-width: min(420px, calc(100vw - 20px));
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 16px;
+  background: rgba(247, 251, 255, 0.92);
+  box-shadow: 0 12px 36px rgba(18, 50, 74, 0.18);
+  backdrop-filter: blur(10px);
+}
+
+#announcement-chip strong,
+#announcement-chip span {
+  min-width: 0;
+}
+
+#announcement-chip span {
+  grid-column: 1 / -1;
+  line-height: 1.45;
+  color: #25618e;
+}
+
+#announcement-chip button,
+.close-history {
+  border: 0;
+  border-radius: 999px;
+  background: rgba(42, 174, 234, 0.16);
+  color: #12324a;
+  font: inherit;
+  font-weight: 900;
+}
+
+#chat-history-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(18, 50, 74, 0.52);
+  backdrop-filter: blur(8px);
+}
+
+.history-card {
+  width: min(560px, 100%);
+  max-height: min(720px, calc(100vh - 32px));
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.86);
+  border-radius: 18px;
+  background: rgba(247, 251, 255, 0.96);
+  box-shadow: 0 22px 70px rgba(18, 50, 74, 0.28);
+}
+
+.history-card header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px;
+  border-bottom: 1px solid rgba(66, 201, 255, 0.28);
+}
+
+.history-card h2,
+.history-card p,
+.history-item p {
+  margin: 0;
+}
+
+.history-card h2 {
+  font-size: 22px;
+}
+
+.history-card header p {
+  margin-top: 4px;
+  color: #25618e;
+  line-height: 1.45;
+}
+
+.history-list {
+  display: grid;
+  gap: 10px;
+  overflow: auto;
+  padding: 14px 18px 18px;
+}
+
+.history-item {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(66, 201, 255, 0.3);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.history-item div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #25618e;
+  font-size: 12px;
+}
+
+.history-item button {
+  justify-self: end;
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(180, 35, 24, 0.1);
+  color: #b42318;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.admin-page {
+  min-height: 100%;
+  overflow: auto;
+}
+
+.admin-page #account-chip {
+  position: fixed;
+}
+
+#admin-root {
+  min-height: 100%;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 16% 8%, rgba(255, 255, 255, 0.86), transparent 20%),
+    linear-gradient(160deg, #c8f9e5, #8eeaff 58%, #f7fbff);
+}
+
+.admin-shell {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+}
+
+.admin-loading,
+.admin-blocked {
+  padding: 24px;
+  border-radius: 18px;
+  background: rgba(247, 251, 255, 0.88);
+}
+
+.admin-hero,
+.admin-panel,
+.admin-stats article {
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 18px;
+  background: rgba(247, 251, 255, 0.84);
+  box-shadow: 0 16px 44px rgba(18, 50, 74, 0.14);
+  backdrop-filter: blur(10px);
+}
+
+.admin-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+  padding: 24px;
+}
+
+.admin-hero p,
+.admin-hero h1,
+.admin-hero span,
+.panel-title h2,
+.panel-title p {
+  margin: 0;
+}
+
+.admin-hero p {
+  color: #25618e;
+  font-weight: 800;
+}
+
+.admin-hero h1 {
+  font-size: 34px;
+}
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.admin-stats article {
+  display: grid;
+  gap: 4px;
+  padding: 18px;
+}
+
+.admin-stats strong {
+  font-size: 30px;
+}
+
+.admin-panel {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.announcement-form {
+  display: grid;
+  gap: 10px;
+}
+
+.announcement-form input,
+.announcement-form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  border: 2px solid rgba(66, 201, 255, 0.72);
+  border-radius: 12px;
+  padding: 11px 12px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #12324a;
+  font: inherit;
+}
+
+.admin-hero button,
+.announcement-form button,
+.report-row button,
+.admin-blocked button {
+  border: 0;
+  border-radius: 12px;
+  padding: 11px 14px;
+  background: #2aaeea;
+  color: #f7fbff;
+  font: inherit;
+  font-weight: 800;
+}
+
+.announcement-list,
+.report-list,
+.admin-chat-list {
+  display: grid;
+  gap: 10px;
+  max-height: 520px;
+  overflow: auto;
+}
+
+.announcement-row,
+.report-row,
+.admin-chat-row {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid rgba(66, 201, 255, 0.28);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.report-row.open {
+  border-color: rgba(180, 35, 24, 0.32);
+}
+
+.report-row div,
+.admin-chat-row div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.report-row span {
+  color: #b42318;
+  font-weight: 800;
+}
+
+.report-row.closed span {
+  color: #25618e;
+}
+
+.announcement-row p,
+.report-row p,
+.admin-chat-row p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.announcement-row time,
+.report-row time,
+.admin-chat-row time {
+  color: #25618e;
+  font-size: 12px;
+}
+
+@media (max-width: 760px) {
+  html,
+  body {
+    height: var(--stable-window-height, 100svh);
+  }
+
+  #admin-root {
+    padding: 14px;
+  }
+
+  .admin-hero,
+  .admin-grid,
+  .admin-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-hero {
+    display: grid;
+    align-items: start;
+  }
+
+  .admin-hero h1 {
+    font-size: 28px;
+  }
+
+  #chat-panel {
+    top: auto;
+    bottom: max(14px, env(safe-area-inset-bottom));
+    left: auto;
+    right: 12px;
+    width: auto;
+    max-width: calc(100vw - 24px);
+    transform: none;
+    padding: 10px;
+    border-radius: 18px;
+    background: rgba(18, 50, 74, 0.58);
+  }
+
+  #chat-panel.expanded {
+    left: 12px;
+    right: 12px;
+    width: auto;
+  }
+
+  .chat-toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 68px;
+    height: 58px;
+    padding: 0;
+    border-radius: 18px;
+  }
+
+  #chat-panel.expanded .chat-toggle {
+    width: 100%;
+    height: 46px;
+  }
+
+  #chat-panel.collapsed .chat-fields {
+    display: none;
+  }
+
+  #chat-panel.expanded .chat-fields {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  #chat-panel.expanded .chat-fields button {
+    min-height: 48px;
+  }
+
+  #chat-panel.expanded input {
+    min-height: 52px;
+  }
+
+  #announcement-chip {
+    right: 10px;
+    bottom: max(90px, calc(env(safe-area-inset-bottom) + 90px));
+  }
+
+  .register-card {
+    width: min(440px, calc(100vw - 24px));
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .register-card button,
+  .account-tabs button {
+    min-height: 52px;
+    font-size: 16px;
+  }
+
+  .register-card input {
+    min-height: 52px;
+    padding: 13px 14px;
+  }
+
+  .history-card {
+    max-height: calc(var(--stable-window-height, 100svh) - 28px);
+  }
+
+  body.text-entry-active #chat-panel {
+    bottom: 12px;
+  }
+}

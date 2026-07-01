@@ -37,7 +37,7 @@ const config: Phaser.Types.Core.GameConfig = {
 };
 
 window.addEventListener("load", async () => {
-  if (window.location.pathname === "/admin") {
+  if (isAdminRoute()) {
     await renderAdminApp();
     return;
   }
@@ -76,6 +76,10 @@ function getPreferredGameSize() {
   }
 
   return window.innerWidth >= window.innerHeight ? LANDSCAPE_SIZE : PORTRAIT_SIZE;
+}
+
+function isAdminRoute() {
+  return window.location.pathname.endsWith("/admin") || window.location.hash === "#admin" || new URLSearchParams(window.location.search).has("admin");
 }
 
 function isTouchPhone() {

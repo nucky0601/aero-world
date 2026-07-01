@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aero World</title>
+    <script>
+      const repoBase = "/aero-world/";
+      const path = window.location.pathname;
+      const target = path.endsWith("/admin") ? `${repoBase}#admin` : repoBase;
+      window.location.replace(target);
+    </script>
+  </head>
+  <body>
+    正在进入 Aero World...
+  </body>
+</html>
